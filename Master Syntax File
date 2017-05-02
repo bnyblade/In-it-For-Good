@@ -487,4 +487,1135 @@ value labels ED_DEBT_TOTAL
 execute. 
 
 
+COMMENT XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
+COMMENT NEW BLOCK OF VARIABLES.
+COMMENT Additional variables constructed by Professo Albiston's Research Assistant Spring 2017 appear below.
+
+COMMENT CREATE NEW BLOCK OF VARIABLES, DEMOGRAPHIC VARIABLES.
+*BLOCK OF VARIABLES CREATED BY MARK LEINAUER ON MARCH 29, 2017.
+
+COMMENT CREATE DEMOGRAPHIC VARIABLE AGEQ72 AND Q72A.
+* BY MARK LEINAUER ON MARCH 29, 2017. 
+* NOTE: AGEQ72 VARIABLE CONTAINS ERROR; AGE HAS BEEN CALCULATED BY SUBTRACTING THE YEAR OF BIRTH FROM THE SURVEY YEAR.
+* BUT NOT ALL SCHOOLS WERE SURVEYED AT THE SAME TIME - THE MAJORITY WERE SURVEYED IN 2016 AND THAT NUMBER HAS BEEN USED TO. 
+* CREATE THIS VARIABLE BUT SOME WERE ACTUALY SURVEYED IN 2015 - PROF. ALBISTON IS AWARE OF THIS ERROR - IF ACCURACY IS PARAMOUNT.
+*THIS VARIABLE SHOULD BE EDITED IN THE FUTURE TO ACCOUNT FOR THE 2015 SURVEYS.
+*IT WAS NECESSARY TO CONVERT q72 (YEAR BORN) FROM STRING TO NUMERIC.
+*IT WAS ALSO NECESSARY TO ASSIGN -8 AS A MISSING VALUE TO q72.
+*TO AVOID ALTERING OLD DATASET A NEW q72 VARIABLE WAS CREATED WITH THE ABOVE TWO CORRECTIONS MADE: Q72A.
+* SOURCE RAW 2017 DATA.
+STRING Q72A (A4).
+COMPUTE Q72A = q72.
+ALTER TYPE Q72A (f8). 
+MISSING VALUE Q72A (-8).
+VARIABLE LABELS
+Q72A A copy of q72 but in numeric format and with missing values assigned. 
+VALUE LABELS Q72A
+-8 MISSING.
+EXECUTE.
+
+STRING AGEQ72 (A6). 
+EXECUTE. 
+ALTER TYPE AGEQ72 (f8). 
+EXECUTE.
+COMPUTE AGEQ72 = 2016 - Q72A. 
+EXECUTE.
+VARIABLE LABELS
+AGEQ72 Age of Respondent at time of survey. 
+EXECUTE.
+ 
+COMMENT CREATE VARIABLE FBQ76.
+* SHORT FOR "FORIEGN BORN Q76" - WHILE q76 LISTED 1 FOR DOMESTIC BIRTH AND 2 FOR FORIEGN BIRTH THIS VARIABLE CREATES A SIMPLE BINARY. 
+* BY MARK LEINAUER ON MARCH 29, 2017. 
+* SOURCE RAW 2017 DATA.
+STRING FBQ76 (A5). 
+ALTER TYPE FBQ76 (f8). 
+COMPUTE FBQ76 = q76.
+ALTER TYPE FBQ76 (f8). 
+EXECUTE.
+VARIABLE LABELS
+FBQ76 Was the Respondent born in the United States.
+EXECUTE.
+IF (FBQ76 = 2) FBQ76 = 0.
+EXECUTE. 
+VALUE LABELS FBQ76
+1 = YES, 0 = NO.
+EXECUTE. 
+
+COMMENT CREATE VARIABLE Q77PFB Q76AFB AND Q76BFB.
+* Q77PFB = ONE OR MORE PARENTS FORIEGN BORN - CREATED FROM VARIABLE q77. 
+* BY MARK LEINAUER ON MARCH 29, 2017. 
+* SOURCE RAW 2017 DATA.
+STRING Q77PFB (A6). 
+ALTER TYPE Q77PFB (f8). 
+VALUE LABELS Q77PFB
+1 = YES, 0 = NO.
+VARIABLE LABELS 
+Q77PFB One or more parents foriegn born. 
+EXECUTE. 
+COMMENT IT IS NECESSARY TO CREATE BINARY VARIABLES FOR MOTHER AND FATHER FORIEGN BORN: Q77AFB AND Q77BFB.
+*q77a AND q77b ARE TEXT RESPONSE QUESTIONS - THUS I COMBED THROUGH DATA (FREQ ANALYSIS) FOR ALL PERMUTATIONS OF "UNITED STATES".
+* (U.S., U.S.A., 'Murica ETC) - 0 = BOTH U.S. 1 = ONE OR MORE FORIEGN.  
+* TEXT RESPONSES ALSO CONTAINED "PREFER NOT TO ANSWER"  AND OTHER PERMUTATIONS (DECLINE ETC.) INSTEAD OF MISSING ON OCCASSION - ALSO ACCOUNTED FOR THAT. 
+* THUS I WAS FORCED TO DO THE SAME PROCESS FOR THE MISSING VALUES.
+* BY MARK LEINAUER ON MARCH 29, 2017. 
+* SOURCE RAW 2017 DATA.
+STRING Q77AFB (A6).
+ALTER TYPE Q77AFB (f8). 
+VALUE LABELS Q77AFB
+1 = YES, 0 = NO.
+VARIABLE LABELS 
+Q77AFB Mother Female Guardian Guardian 1 foriegn born. 
+EXECUTE. 
+STRING Q77BFB (A6). 
+ALTER TYPE Q77BFB (f8).
+VALUE LABELS Q77BFB
+1 = YES, 0 = NO.
+VARIABLE LABELS 
+Q77BFB Father Male Guardian Guardian 2 foriegn born.
+EXECUTE. 
+COMPUTE Q77AFB = 1. 
+IF (q77a = "United States") Q77AFB = 0.
+IF (q77a = "US") Q77AFB = 0.
+IF (q77a = "USA") Q77AFB = 0.
+IF (q77a = "usa") Q77AFB = 0.
+IF (q77a = "Usa") Q77AFB = 0.
+IF (q77a = "Us") Q77AFB = 0.
+IF (q77a = "United States of America") Q77AFB = 0.
+IF (q77a = "U.S.") Q77AFB = 0.
+IF (q77a = "U.S.A.") Q77AFB = 0.
+IF (q77a = "'Murica") Q77AFB = 0.
+IF (q77a = "america") Q77AFB = 0.
+IF (q77a = "America") Q77AFB = 0.
+IF (q77a = "The United States of America") Q77AFB = 0.
+IF (q77a = "this one") Q77AFB = 0.
+IF (q77a = "U.S.A") Q77AFB = 0.
+IF (q77a = "United states") Q77AFB = 0.
+IF (q77a = "united states") Q77AFB = 0.
+IF (q77a = "UNITEd states") Q77AFB = 0.
+IF (q77a = "UNITED STATES") Q77AFB = 0.
+IF (q77a = "United States (on the border)") Q77AFB = 0.
+IF (q77a = "United states of america") Q77AFB = 0.
+IF (q77a = "United States - Puerto Rico") Q77AFB = 0.
+IF (q77a = "US of A") Q77AFB = 0.
+IF (q77a = "US-Puerto Rico") Q77AFB = 0.
+IF (q77a = "uSA") Q77AFB = 0.
+IF (q77a = "USA (to immigrant parents)") Q77AFB = 0.
+IF (q77a = "USA, Puerto Rico") Q77AFB = 0.
+IF (q77a = "Puerto Rico") Q77AFB = 0.
+IF (q77a = "Puerto rico") Q77AFB = 0.
+EXECUTE.
+
+* CREATE MISSING VALUES THAT ACCOUNT FOR ALL PERMUTATIONS OF "REFUSE TO ANSWER" IN q77a.
+*NOTE - I LISTED NONSENSE ANSWERS (1947 ... ) AS MISSING. 
+IF (q77a = "-8") Q77AFB = -8.
+IF (q77a = "prefer not to answer") Q77AFB = -8.
+IF (q77a = "-Decline to Answer") Q77AFB = -8.
+IF (q77a = "no reply") Q77AFB = -8.
+IF (q77a = "Not relevant") Q77AFB = -8.
+IF (q77a = "na") Q77AFB = -8.
+IF (q77a = "N/a") Q77AFB = -8.
+IF (q77a = "why") Q77AFB = -8.
+IF (q77a = "1947") Q77AFB = -8.
+IF (q77a = "1954") Q77AFB = -8.
+IF (q77a = "Decline") Q77AFB = -8.
+EXECUTE.
+MISSING VALUES Q77AFB (-8). 
+VALUE LABELS Q77AFB
+-8 MISSING.
+EXECUTE.
+
+*Compute binary variable from q77b (father). Same Process as above but relevant open responses that were not in the above set were added (missing included).
+COMPUTE Q77BFB = 1.
+IF (q77b = "United States") Q77BFB = 0.
+IF (q77b = "US") Q77BFB = 0.
+IF (q77b = "USA") Q77BFB = 0.
+IF (q77b = "usa") Q77BFB = 0.
+IF (q77b = "Usa") Q77BFB = 0.
+IF (q77b = "Us") Q77BFB = 0.
+IF (q77b = "United States of America") Q77BFB = 0.
+IF (q77b = "U.S.") Q77BFB = 0.
+IF (q77b = "U.S.A.") Q77BFB = 0.
+IF (q77b = "'Murica") Q77BFB = 0.
+IF (q77b = "america") Q77BFB = 0.
+IF (q77b = "America") Q77BFB = 0.
+IF (q77b = "The United States of America") Q77BFB = 0.
+IF (q77b = "this one") Q77BFB = 0.
+IF (q77b = "U.S.A") Q77BFB = 0.
+IF (q77b = "United states") Q77BFB = 0.
+IF (q77b = "united states") Q77BFB = 0.
+IF (q77b = "UNITEd states") Q77BFB = 0.
+IF (q77b = "UNITED STATES") Q77BFB = 0.
+IF (q77b = "United States (on the border)") Q77BFB = 0.
+IF (q77b = "United states of america") Q77BFB = 0.
+IF (q77b = "United States - Puerto Rico") Q77BFB = 0.
+IF (q77b = "US of A") Q77BFB = 0.
+IF (q77b = "US-Puerto Rico") Q77BFB = 0.
+IF (q77b = "uSA") Q77BFB = 0.
+IF (q77b = "USA (to immigrant parents)") Q77BFB = 0.
+IF (q77b = "USA, Puerto Rico") Q77BFB = 0.
+IF (q77b = "Puerto Rico") Q77BFB = 0.
+IF (q77b = "Puerto rico") Q77BFB = 0.
+IF (q77b = "u.s.") Q77BFB = 0.
+IF (q77b = "U.s.") Q77BFB = 0.
+IF (q77b = "U.S. (Puerto Rico") Q77BFB = 0.
+IF (q77b = "U.S. raised in Cuba") Q77BFB = 0.
+IF (q77b = "United statea") Q77BFB = 0.
+IF (q77b = "United States.") Q77BFB = 0.
+IF (q77b = "Unites States") Q77BFB = 0.
+IF (q77b = "uS") Q77BFB = 0.
+IF (q77b = "USA baby") Q77BFB = 0.
+EXECUTE.
+
+* CREATE MISSING VALUES THAT ACCOUNT FOR ALL PERMUTATIONS OF "REFUSE TO ANSWER" IN q77b.
+*NOTE - I LISTED NONSENSE ANSWERS (1947 ... ) AS MISSING. 
+IF (q77b = "-8") Q77BFB = -8.
+IF (q77b = "prefer not to answer")  Q77BFB = -8.
+IF (q77b = "-Decline to Answer")  Q77BFB = -8.
+IF (q77b = "no reply")  Q77BFB = -8.
+IF (q77b = "Not relevant")  Q77BFB = -8.
+IF (q77b = "na")  Q77BFB = -8.
+IF (q77b = "N/a")  Q77BFB = -8.
+IF (q77b = "why")  Q77BFB = -8.
+IF (q77b = "1947")  Q77BFB = -8.
+IF (q77b = "1954")  Q77BFB = -8.
+IF (q77b = "Decline")  Q77BFB = -8.
+IF (q77b = "1950")  Q77BFB = -8.
+IF (q77b = "Decline to state")  Q77BFB = -8.
+IF (q77b = "None")  Q77BFB = -8.
+IF (q77b = "Not applicable, I only had one guardian")  Q77BFB = -8.
+IF (q77b = "Prefer not answer")  Q77BFB = -8.
+IF (q77b = "unknown")  Q77BFB = -8.
+
+EXECUTE.
+MISSING VALUES Q77BFB (-8). 
+VALUE LABELS Q77BFB
+-8 MISSING.
+EXECUTE.
+
+COMPUTE Q77PFB = 0.
+IF (Q77BFB = 1) Q77PFB = 1.
+IF (Q77AFB = 1) Q77PFB = 1.
+EXECUTE.
+
+COMMENT CREATE SINGLE VARIABLE FOR RELIGION OF RESPONDENT WITH A CATEGORY FOR MULTIPLE RESPONSES. 
+* CREATED FROM q82a-h - 
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+* NOTE - TO DETERMINE THE ACTUAL COMBINATION FOR ALL "MULTIPLE" RESPONSES YOU CAN CHECK THE SOURCE VARIABLES. 
+*NOTE - THERE IS AN OPEN ENDED STRING VARIABLE FOR OTHER SO THAT TOO CAN BE DETERMINED BY CHECKING OLDER VARIABLE SET.
+
+STRING RELIG (A5). 
+ALTER TYPE RELIG (f8). 
+COMPUTE RELIG = -8.
+VARIABLE LABELS
+RELIG Religion of Respondent. 
+VALUE LABELS RELIG
+1 = Catholic, 2 = Protestant, 3 = Jewish, 4 = Muslim, 5 = Hindu, 6 = Buddhist, 7 = Other, 8 = Multiple, 9 = None.
+MISSING VALUES RELIG (-8).
+EXECUTE.
+
+IF (q82a = 1) RELIG = 1.
+IF (q82b = 1) RELIG = 2.
+IF (q82c = 1) RELIG = 3.
+IF (q82d = 1) RELIG = 4.
+IF (q82e = 1) RELIG = 5.
+IF (q82f = 1) RELIG = 6.
+IF (q82g = 1) RELIG = 7.
+IF (q82h = 1) RELIG = 9.
+COMPUTE Q82AA = 0.
+COMPUTE Q82BB = 0.
+COMPUTE Q82CC = 0.
+COMPUTE Q82DD = 0.
+COMPUTE Q82EE = 0.
+COMPUTE Q82FF = 0.
+COMPUTE Q82GG = 0.
+COMPUTE Q82HH = 0.
+IF (q82a = 1) Q82AA = 1.
+IF (q82b = 1) Q82BB = 1.
+IF (q82c = 1) Q82CC = 1.
+IF (q82d = 1) Q82DD = 1.
+IF (q82e = 1) Q82EE =1.
+IF (q82f = 1) Q82FF = 1.
+IF (q82g = 1) Q82GG = 1.
+IF (q82h = 1) Q82HH = 1.
+EXECUTE.
+COMPUTE Q82TOTAL2 = Q82AA + Q82BB + Q82CC + Q82DD + Q82EE + Q82FF + Q82GG + Q82HH.
+EXECUTE. 
+IF (Q82TOTAL2 > 1) RELIG = 8. 
+EXECUTE.
+DELETE VARIABLES Q82AA Q82BB Q82CC Q82DD Q82EE Q82FF Q82GG Q82HH Q82TOTAL2.
+EXECUTE.
+
+
+COMMENT CREATE EDUCATION VARIABLES (DURING LAW SCHOOL). 
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+COMMENT CREATE EDQ26 - YEARS WORKING FOR PAY AN AVERAGE OF 15 HOURS OR MORE DURING LAW SCHOOL.
+* CREATED FROM VARIABLE q26 (As a law student, how many years did you work for pay an average of 15 hours or more per week during the academic year?).
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+* NOTE THIS DIFFERS ONLY SLIGHTLY FROM q26 - q26 ALLOWED FOR 4 OR MORE WHILE THIS ONLY ALLOWS FOR 3 OR MORE.
+
+STRING EDQ26 (A5). 
+ALTER TYPE EDQ26 (f8). 
+COMPUTE EDQ26 = -8.
+VARIABLE LABELS
+EDQ26 Years working for pay an avg. of 15 hours or more per week during law school. 
+VALUE LABELS EDQ26
+0 = 0, 1 = 1, 2 = 2, 3 = 3 or more, 5 = < 1, -9 = Off Path. 
+MISSING VALUES EDQ26 (-8).
+EXECUTE.
+
+IF (q26 = -9) EDQ26 = -9. 
+IF (q26 = 1) EDQ26 = 0. 
+IF (q26 = 2) EDQ26 = 5. 
+IF (q26 = 3) EDQ26 = 1.
+IF (q26 = 4) EDQ26 = 2. 
+IF (q26 = 5) EDQ26 = 3.
+IF (q26 = 6) EDQ26 = 3. 
+EXECUTE. 
+
+COMMENT CREATE EDQ22 BINARY VARIABLES FOR EACH TYPE OF AID (DURING LAW SCHOOL). 
+* BASED ON VARIABLES q22a-e.
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+* NOTE - I'VE INCLUDED SYSTEM MISSING SIMPLY BECUASE  THE ORIGINAL VARIABLES DID LIKEWISE THOUGH IT DOESN'T REALLY MAKE SENSE WHEN THE QUESTION 
+* IS A CHECK THE BOX OR DON'T CHECK THE BOX TYPE OF QUESTION.
+
+STRING EDQ22A (A6). 
+ALTER TYPE EDQ22A (f8). 
+COMPUTE EDQ22A = 0.
+VARIABLE LABELS
+EDQ22A I did not recieve any type of aid while in law school. 
+VALUE LABELS EDQ22A
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ22A (-8).
+EXECUTE.
+
+STRING EDQ22B (A6). 
+ALTER TYPE EDQ22B (f8). 
+COMPUTE EDQ22B = 0.
+VARIABLE LABELS
+EDQ22B I recieved merit based aid while in law school. 
+VALUE LABELS EDQ22B
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ22B (-8).
+EXECUTE.
+
+STRING EDQ22C (A6). 
+ALTER TYPE EDQ22C (f8). 
+COMPUTE EDQ22C = 0.
+VARIABLE LABELS
+EDQ22C I received need based aid while in law school. 
+VALUE LABELS EDQ22C
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ22C (-8).
+EXECUTE.
+
+STRING EDQ22D (A6). 
+ALTER TYPE EDQ22D (f8). 
+COMPUTE EDQ22D = 0.
+VARIABLE LABELS
+EDQ22D I received a public interest scholarship while in law school. 
+VALUE LABELS EDQ22D
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ22D (-8).
+EXECUTE.
+
+STRING EDQ22E (A6). 
+ALTER TYPE EDQ22E (f8). 
+COMPUTE EDQ22E = 0.
+VARIABLE LABELS
+EDQ22E I recieved another type of scholarship while in law school - other. 
+VALUE LABELS EDQ22E
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ22E (-8).
+EXECUTE.
+
+IF (q22a = -9) EDQ22A = -9.
+IF (q22b = -9) EDQ22B = -9.
+IF (q22c = -9) EDQ22C = -9.
+IF (q22d = -9) EDQ22D = -9.
+IF (q22e = -9) EDQ22E = -9.
+
+IF (q22a = -8) EDQ22A = -8.
+IF (q22b = -8) EDQ22B = -8.
+IF (q22c = -8) EDQ22C = -8.
+IF (q22d = -8) EDQ22D = -8.
+IF (q22e = -8) EDQ22E = -8.
+
+IF (q22a = 1) EDQ22A = 1.
+IF (q22b = 1) EDQ22B = 1.
+IF (q22c = 1) EDQ22C = 1.
+IF (q22d = 1) EDQ22D = 1.
+IF (q22e = 1) EDQ22E = 1.
+EXECUTE. 
+
+COMMENT CREATE BINARY VARIABLES FOR  q28a-i (programs used to reduce monthly debt). 
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+* NOTE - I'VE INCLUDED SYSTEM MISSING SIMPLY BECUASE  THE ORIGINAL VARIABLES DID LIKEWISE THOUGH IT DOESN'T REALLY MAKE SENSE WHEN THE QUESTION 
+* IS A CHECK THE BOX OR DON'T CHECK THE BOX TYPE OF QUESTION.
+
+STRING EDQ28A (A6). 
+ALTER TYPE EDQ28A (f8). 
+COMPUTE EDQ28A = 0.
+VARIABLE LABELS
+EDQ28A Since graduating law school, I have not participated in any programs to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28A
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28A (-8).
+EXECUTE.
+
+STRING EDQ28B (A6). 
+ALTER TYPE EDQ28B (f8). 
+COMPUTE EDQ28B = 0.
+VARIABLE LABELS
+EDQ28B Since graduating law school, I have utilized a loan consolidation program to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28B
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28B (-8).
+EXECUTE.
+
+STRING EDQ28C (A6). 
+ALTER TYPE EDQ28C (f8). 
+COMPUTE EDQ28C = 0.
+VARIABLE LABELS
+EDQ28C Since graduating law school, I have utilized an extended repayment program to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28C
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28C (-8).
+EXECUTE.
+
+STRING EDQ28D (A6). 
+ALTER TYPE EDQ28D (f8). 
+COMPUTE EDQ28D = 0.
+VARIABLE LABELS
+EDQ28D Since graduating law school, I have utilized a loan assistance program connected to public interest work to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28D
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28D (-8).
+EXECUTE.
+
+STRING EDQ28E (A6). 
+ALTER TYPE EDQ28E (f8). 
+COMPUTE EDQ28E = 0.
+VARIABLE LABELS
+EDQ28E Since graduating law school, I have utilized a loan consolidation program connected to low-paying private sector work to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28E
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28E (-8).
+EXECUTE.
+
+STRING EDQ28F (A6). 
+ALTER TYPE EDQ28F (f8). 
+COMPUTE EDQ28F = 0.
+VARIABLE LABELS
+EDQ28F Since graduating law school, I have utilized an income adjusted federal assitance repayment plan to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28F
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28F (-8).
+EXECUTE.
+
+STRING EDQ28G (A6). 
+ALTER TYPE EDQ28G (f8). 
+COMPUTE EDQ28G = 0.
+VARIABLE LABELS
+EDQ28G Since graduating law school, I have utilized a federal assitance program for public interest work to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28G
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28G (-8).
+EXECUTE.
+
+STRING EDQ28H (A6). 
+ALTER TYPE EDQ28H (f8). 
+COMPUTE EDQ28H = 0.
+VARIABLE LABELS
+EDQ28H Since graduating law school, I have utilized forbearance or deferment to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28H
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28H (-8).
+EXECUTE.
+
+STRING EDQ28I (A6). 
+ALTER TYPE EDQ28I (f8). 
+COMPUTE EDQ28I = 0.
+VARIABLE LABELS
+EDQ28I Since graduating law school, I have utilized other assitance repayment plans to reduce my debt payments or overrall debt. 
+VALUE LABELS EDQ28I
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ28I (-8).
+EXECUTE.
+
+IF (q28a = -9) EDQ28A = -9.
+IF (q28b = -9) EDQ28B = -9.
+IF (q28c = -9) EDQ28C = -9.
+IF (q28d = -9) EDQ28D = -9.
+IF (q28e = -9) EDQ28E = -9.
+IF (q28f = -9) EDQ28F = -9.
+IF (q28g = -9) EDQ28G = -9.
+IF (q28h = -9) EDQ28H = -9.
+IF (q28i = -9) EDQ28I = -9.
+
+IF (q28a = -8) EDQ28A = -8.
+IF (q28b = -8) EDQ28B = -8.
+IF (q28c = -8) EDQ28C = -8.
+IF (q28d = -8) EDQ28D = -8.
+IF (q28e = -8) EDQ28E = -8.
+IF (q28f = -8) EDQ28F = -8.
+IF (q28g = -8) EDQ28G = -8. 
+IF (q28h = -8) EDQ28H = -8.
+IF (q28i = -8) EDQ28I = -8.
+
+IF (q28a = 1) EDQ28A = 1.
+IF (q28b = 1) EDQ28B = 1.
+IF (q28c = 1) EDQ28C = 1.
+IF (q28d = 1) EDQ28D = 1.
+IF (q28e = 1) EDQ28E = 1.
+IF (q28f = 1) EDQ28F = 1.
+IF (q28g = 1) EDQ28G = 1.
+IF (q28h = 1) EDQ28H = 1.
+IF (q28i = 1) EDQ28I = 1.
+EXECUTE. 
+
+COMMENT CREATE NEW VARIABLE FOR q42 (WHAT WAS YOUR RANK IN LAW SCHOOL?) THAT TREATS "DON'T KNOW" AS MISSING.
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+STRING EDQ42 (A5). 
+ALTER TYPE EDQ42 (f8). 
+COMPUTE EDQ42 = q42.
+VARIABLE LABELS
+EDQ42 In which percentile did you graduate in your law school class?.
+VALUE LABELS EDQ42
+1 = "TOP 10%", 2 = "TOP 11 - 25%", 3 = "SECOND QUARTER OF CLASS", 4 =  "BOTTOM HALF", -8 = "MISSING", -9 = "OFF PATH".
+MISSING VALUES EDQ42 (-8).
+IF (q42 = 5) EDQ42 = -8.
+EXECUTE.
+
+COMMENT CREATE NEW BINARY VARIABLES FOR q43a-p_other (PARTICIPATION IN CERTIFICATE PROGRAMS).
+* CARE WAS TAKEN TO REGISTER AS "MISSING" NON-RESPONSES FROM RESPONDENTS AT SCHOOLS THAT DID NOT OFFER THE CERIFICATE PROGRAM. 
+* STANFORD AND SOUTHWESTERN DID NOT RECEIVE Q43 SO THEY HAVE BEEN REMOVED FROM ALL (INCLUDING NONE and other). 
+*CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+*NOTE - OLD q43 VARIABLES HAD AN OPEN ENDED RESPONSE AFTER "OTHER." I WAS INSTRUCTED TO CONSTRUCT BINARY VARIABLES SO THAT 
+*INFORMATION HAS OBVIOUSLY BEEN LEFT OUT. 
+*NOTE! THERE APPEARS TO BE AN ERROR IN THE INITIAL DATASET - Q43G AND Q43D ARE THE SAME.
+*I HAVE ALERTED PROF ALBISTON BUT I HAVE CODED BOTH. 
+*I DID NOT CONSIDER "LAW AND TECHNOLOGY" TO BE THE SAME THING AS "HIGH TECH LAW," THOUGH ONE ARGUABLY COULD.
+
+
+STRING EDQ43A (A6). 
+ALTER TYPE EDQ43A (f8). 
+COMPUTE EDQ43A = 0.
+VARIABLE LABELS
+EDQ43A While in law school, did you participate in any of the following certificate-conferring programs? None.
+VALUE LABELS EDQ43A
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43A (-8).
+IF (q43a = 1) EDQ43A = 1.
+IF (institution = "Stanford") EDQ43A = -8.
+IF (institution = "Southwestern") EDQ43A = -8.
+EXECUTE.
+
+STRING EDQ43B (A6). 
+ALTER TYPE EDQ43B (f8). 
+COMPUTE EDQ43B = 0.
+VARIABLE LABELS
+EDQ43B While in law school, did you participate in any of the following certificate-conferring programs? Business Law & Policy.
+VALUE LABELS EDQ43B
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43B (-8).
+IF (q43b = 1) EDQ43B = 1. 
+IF (institution = "Stanford") EDQ43B = -8.
+IF (institution = "Southwestern") EDQ43B = -8.
+IF (institution = "Berkeley") EDQ43B = -8.
+IF (institution = "Santa Clara") EDQ43B = -8.
+IF (institution = "USC") EDQ43B = -8.
+EXECUTE.
+
+STRING EDQ43C (A6). 
+ALTER TYPE EDQ43C (f8). 
+COMPUTE EDQ43C = 0.
+VARIABLE LABELS
+EDQ43C While in law school, did you participate in any of the following certificate-conferring programs? Critical Race Studies.
+VALUE LABELS EDQ43C
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43C (-8).
+IF (q43c = 1) EDQ43C = 1. 
+IF (institution = "Stanford") EDQ43C = -8.
+IF (institution = "Southwestern") EDQ43C = -8.
+IF (institution = "Santa Clara") EDQ43C = -8.
+IF (institution = "USC") EDQ43C = -8.
+IF (institution = "Berkeley") EDQ43C = -8.
+EXECUTE.
+
+STRING EDQ43D (A6). 
+ALTER TYPE EDQ43D (f8). 
+COMPUTE EDQ43D = 0.
+VARIABLE LABELS
+EDQ43D While in law school, did you participate in any of the following certificate-conferring programs? David J. Epstein Program in Public Interest Law & Policy.
+VALUE LABELS EDQ43D
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43D (-8).
+IF (q43d = 1) EDQ43D = 1. 
+IF (institution = "Stanford") EDQ43D = -8.
+IF (institution = "Southwestern") EDQ43D = -8.
+IF (institution = "Santa Clara") EDQ43D = -8.
+IF (institution = "Berkeley") EDQ43D = -8.
+IF (institution = "USC") EDQ43D = -8.
+EXECUTE.
+
+STRING EDQ43E (A6). 
+ALTER TYPE EDQ43E (f8). 
+COMPUTE EDQ43E = 0.
+VARIABLE LABELS
+EDQ43E While in law school, did you participate in any of the following certificate-conferring programs? Entertainment, Media, and Intellectual Property Law.
+VALUE LABELS EDQ43E
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43E (-8).
+IF (q43e = 1) EDQ43E = 1. 
+IF (institution = "Stanford") EDQ43E = -8.
+IF (institution = "Southwestern") EDQ43E = -8.
+IF (institution = "Santa Clara") EDQ43E = -8.
+IF (institution = "Berkeley") EDQ43E = -8.
+IF (institution = "USC") EDQ43E = -8.
+EXECUTE.
+
+STRING EDQ43F (A6). 
+ALTER TYPE EDQ43F (f8). 
+COMPUTE EDQ43F = 0.
+VARIABLE LABELS
+EDQ43F While in law school, did you participate in any of the following certificate-conferring programs? Law & Philosophy.
+VALUE LABELS EDQ43F
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43F (-8).
+IF (q43f = 1) EDQ43F = 1. 
+IF (institution = "Stanford") EDQ43F = -8.
+IF (institution = "Southwestern") EDQ43F = -8.
+IF (institution = "Santa Clara") EDQ43F = -8.
+IF (institution = "USC") EDQ43F = -8.
+IF (institution = "Berkeley") EDQ43F = -8.
+EXECUTE.
+
+STRING EDQ43G (A6). 
+ALTER TYPE EDQ43G (f8). 
+COMPUTE EDQ43G = 0.
+VARIABLE LABELS
+EDQ43G While in law school, did you participate in any of the following certificate-conferring programs? David J. Epstein Program in Public Interest Law and Policy.
+VALUE LABELS EDQ43G
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43G (-8).
+IF (q43g = 1) EDQ43G = 1. 
+IF (institution = "Stanford") EDQ43G = -8.
+IF (institution = "Southwestern") EDQ43G = -8.
+IF (institution = "Santa Clara") EDQ43G = -8.
+IF (institution = "Berkeley") EDQ43G = -8.
+IF (institution = "USC") EDQ43G = -8.
+EXECUTE.
+
+STRING EDQ43H (A6). 
+ALTER TYPE EDQ43H (f8). 
+COMPUTE EDQ43H = 0.
+VARIABLE LABELS
+EDQ43H While in law school, did you participate in any of the following certificate-conferring programs? High Tech Law.
+VALUE LABELS EDQ43H
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43H (-8).
+IF (q43h = 1) EDQ43H = 1. 
+IF (institution = "Stanford") EDQ43H = -8.
+IF (institution = "Southwestern") EDQ43H = -8.
+IF (institution = "UCLA") EDQ43H = -8.
+IF (institution = "USC") EDQ43H = -8.
+IF (institution = "Berkeley") EDQ43H = -8.
+EXECUTE.
+
+STRING EDQ43I (A6). 
+ALTER TYPE EDQ43I (f8). 
+COMPUTE EDQ43I = 0.
+VARIABLE LABELS
+EDQ43I While in law school, did you participate in any of the following certificate-conferring programs? International Law.
+VALUE LABELS EDQ43I
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43I (-8).
+IF (q43i = 1) EDQ43I = 1. 
+IF (institution = "Stanford") EDQ43I = -8.
+IF (institution = "Southwestern") EDQ43I = -8.
+IF (institution = "UCLA") EDQ43I = -8.
+IF (institution = "USC") EDQ43I = -8.
+IF (institution = "Berkeley") EDQ43I = -8.
+EXECUTE.
+
+STRING EDQ43J (A6). 
+ALTER TYPE EDQ43J (f8). 
+COMPUTE EDQ43J = 0.
+VARIABLE LABELS
+EDQ43J While in law school, did you participate in any of the following certificate-conferring programs? Public Interest and Social Justice Law Certificate.
+VALUE LABELS EDQ43J
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43J (-8).
+IF (q43j = 1) EDQ43J = 1. 
+IF (institution = "Stanford") EDQ43J = -8.
+IF (institution = "Southwestern") EDQ43J = -8.
+IF (institution = "UCLA") EDQ43J = -8.
+IF (institution = "USC") EDQ43J = -8.
+IF (institution = "Berkeley") EDQ43J = -8.
+EXECUTE.
+
+STRING EDQ43K (A6). 
+ALTER TYPE EDQ43K (f8). 
+COMPUTE EDQ43K = 0.
+VARIABLE LABELS
+EDQ43K While in law school, did you participate in any of the following certificate-conferring programs? Business Law.
+VALUE LABELS EDQ43K
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43K (-8).
+IF (q43k = 1) EDQ43K = 1. 
+IF (institution = "Stanford") EDQ43K = -8.
+IF (institution = "Southwestern") EDQ43K = -8.
+IF (institution = "Santa Clara") EDQ43K = -8.
+IF (institution = "Berkeley") EDQ43K = -8.
+IF (institution = "UCLA") EDQ43K = -8.
+EXECUTE.
+
+STRING EDQ43L (A6). 
+ALTER TYPE EDQ43L (f8). 
+COMPUTE EDQ43L = 0.
+VARIABLE LABELS
+EDQ43L While in law school, did you participate in any of the following certificate-conferring programs? Entertainment Law.
+VALUE LABELS EDQ43L
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43L (-8).
+IF (q43l = 1) EDQ43L = 1. 
+IF (institution = "Stanford") EDQ43L = -8.
+IF (institution = "Southwestern") EDQ43L = -8.
+IF (institution = "Santa Clara") EDQ43L = -8.
+IF (institution = "Berkeley") EDQ43L = -8.
+IF (institution = "UCLA") EDQ43L = -8.
+EXECUTE.
+
+STRING EDQ43M (A6). 
+ALTER TYPE EDQ43M (f8). 
+COMPUTE EDQ43M = 0.
+VARIABLE LABELS
+EDQ43M While in law school, did you participate in any of the following certificate-conferring programs? Law and Technology.
+VALUE LABELS EDQ43M
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43M (-8).
+IF (q43m = 1) EDQ43M = 1. 
+IF (institution = "Stanford") EDQ43M = -8.
+IF (institution = "Southwestern") EDQ43M = -8.
+IF (institution = "UCLA") EDQ43M = -8.
+IF (institution = "Santa Clara") EDQ43M = -8.
+IF (institution = "USC") EDQ43M = -8.
+EXECUTE.
+
+STRING EDQ43N (A6). 
+ALTER TYPE EDQ43N (f8). 
+COMPUTE EDQ43N = 0.
+VARIABLE LABELS
+EDQ43N While in law school, did you participate in any of the following certificate-conferring programs? Environmental Law.
+VALUE LABELS EDQ43N
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43N (-8).
+IF (q43n = 1) EDQ43N = 1. 
+IF (institution = "Stanford") EDQ43N = -8.
+IF (institution = "Southwestern") EDQ43N = -8.
+IF (institution = "UCLA") EDQ43N = -8.
+IF (institution = "Santa Clara") EDQ43N = -8.
+IF (institution = "USC") EDQ43N = -8.
+EXECUTE.
+
+STRING EDQ43O (A6). 
+ALTER TYPE EDQ43O (f8). 
+COMPUTE EDQ43O = 0.
+VARIABLE LABELS
+EDQ43O While in law school, did you participate in any of the following certificate-conferring programs? Energy and Clean Technology.
+VALUE LABELS EDQ43O
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43O (-8).
+IF (q43o = 1) EDQ43O = 1. 
+IF (institution = "Stanford") EDQ43O = -8.
+IF (institution = "Southwestern") EDQ43O = -8.
+IF (institution = "UCLA") EDQ43O = -8.
+IF (institution = "Santa Clara") EDQ43O = -8.
+IF (institution = "USC") EDQ43O = -8.
+EXECUTE.
+
+STRING EDQ43P (A6). 
+ALTER TYPE EDQ43P (f8). 
+COMPUTE EDQ43P = 0.
+VARIABLE LABELS
+EDQ43P While in law school, did you participate in any of the following certificate-conferring programs? Other.
+VALUE LABELS EDQ43P
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43P (-8).
+IF (q43p = 1) EDQ43P = 1. 
+IF (institution = "Stanford") EDQ43P = -8.
+IF (institution = "Southwestern") EDQ43P = -8.
+EXECUTE.
+
+COMMENT CREATE NEW BINARY VARIABLE TO DENOTE PARTICIPATION IN ANY CERTIFICATE PROGRAM. 
+* FROM THE q43 VARIABLES. 
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+STRING EDQ43Q (A6). 
+ALTER TYPE EDQ43Q (f8). 
+COMPUTE EDQ43Q = 0.
+VARIABLE LABELS
+EDQ43Q While in law school, did you participate in any certificate conferring programs?.
+VALUE LABELS EDQ43Q
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES EDQ43Q (-8).
+IF (EDq43b = 1) EDQ43Q = 1.
+IF (EDq43c = 1) EDQ43Q = 1.
+IF (EDq43d = 1) EDQ43Q = 1.
+IF (EDq43e = 1) EDQ43Q = 1.
+IF (EDq43f = 1) EDQ43Q = 1.
+IF (EDq43g = 1) EDQ43Q = 1.
+IF (EDq43h = 1) EDQ43Q = 1.
+IF (EDq43i = 1) EDQ43Q = 1.
+IF (EDq43j = 1) EDQ43Q = 1.
+IF (EDq43k = 1) EDQ43Q = 1.
+IF (EDq43l = 1) EDQ43Q = 1. 
+IF (EDq43m = 1) EDQ43Q = 1.
+IF (EDq43n = 1) EDQ43Q = 1.
+IF (EDq43o = 1) EDQ43Q = 1.
+IF (EDq43p = 1) EDQ43Q = 1. 
+IF (institution = "Stanford") EDQ43Q = -8.
+IF (institution = "Southwestern") EDQ43Q = -8.
+EXECUTE.
+
+COMMENT CREATE ENDOWMENT VAFRIABLES (PRIOR TO LAW SCHOOL). 
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+COMMENT CREATE A BINARY VARIABLE FOR LEADERSHIP IN A STUDENT ORGANIZATION FROM THESE VARIABLES: q6a - q6d_issue.
+* CREATED BY MARK LEINAUER ON APRIL 4TH, 2017. 
+* SOURCE RAW 2017 DATA.
+* NOTE - q6d_issue IS NOT A BINARY VARIABLE - WHILE I DON'T HAVE THE CODEBOOK I ASSUME THAT THEY WERE ASKED TO PICK FROM A LIST OF SOCIAL ISSUES-.
+* THE BINARY EQUIVALENT OF q6d_issue IS q6d. 
+
+STRING ENQ6A (A5). 
+ALTER TYPE ENQ6A (f8). 
+COMPUTE ENQ6A = 0.
+VARIABLE LABELS
+ENQ6A During college, did you play a leadership role in any of the following types of student organizations?  I did not play a leadership role in any of the following organizations.
+VALUE LABELS ENQ6A
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6A (-8).
+IF (q6a = 1) ENQ6A = 1. 
+EXECUTE.
+
+STRING ENQ6B (A5). 
+ALTER TYPE ENQ6B (f8). 
+COMPUTE ENQ6B = 0.
+VARIABLE LABELS
+ENQ6B During college, did you play a leadership role in any of the following types of student organizations?  Academic (e.g., math, honors).
+VALUE LABELS ENQ6B
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6B (-8).
+IF (q6b = 1) ENQ6B = 1. 
+EXECUTE.
+
+STRING ENQ6C (A5). 
+ALTER TYPE ENQ6C (f8). 
+COMPUTE ENQ6C = 0.
+VARIABLE LABELS
+ENQ6C During college, did you play a leadership role in any of the following types of student organizations?  Art and culture (e.g., music, film, dance).
+VALUE LABELS ENQ6C
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6C (-8).
+IF (q6c = 1) ENQ6C = 1. 
+EXECUTE.
+
+STRING ENQ6D (A5). 
+ALTER TYPE ENQ6D (f8). 
+COMPUTE ENQ6D = 0.
+VARIABLE LABELS
+ENQ6D During college, did you play a leadership role in any of the following types of student organizations?  Social issue-oriented.
+VALUE LABELS ENQ6D
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6D (-8).
+IF (q6d = 1) ENQ6D = 1. 
+EXECUTE.
+
+STRING ENQ6E (A5). 
+ALTER TYPE ENQ6E (f8). 
+COMPUTE ENQ6E = 0.
+VARIABLE LABELS
+ENQ6E During college, did you play a leadership role in any of the following types of student organizations?  Student government.
+VALUE LABELS ENQ6E
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6E (-8).
+IF (q6e = 1) ENQ6E = 1. 
+EXECUTE.
+
+STRING ENQ6F (A5). 
+ALTER TYPE ENQ6F (f8). 
+COMPUTE ENQ6F = 0.
+VARIABLE LABELS
+ENQ6F During college, did you play a leadership role in any of the following types of student organizations?  Professional (e.g., pre-law, pre-med).
+VALUE LABELS ENQ6F
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6F (-8).
+IF (q6f = 1) ENQ6F = 1. 
+EXECUTE.
+
+STRING ENQ6G (A5). 
+ALTER TYPE ENQ6G (f8). 
+COMPUTE ENQ6G = 0.
+VARIABLE LABELS
+ENQ6G During college, did you play a leadership role in any of the following types of student organizations?  Religious. 
+VALUE LABELS ENQ6G
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6G (-8).
+IF (q6g = 1) ENQ6G = 1. 
+EXECUTE.
+
+
+STRING ENQ6H (A5). 
+ALTER TYPE ENQ6H (f8). 
+COMPUTE ENQ6H = 0.
+VARIABLE LABELS
+ENQ6H During college, did you play a leadership role in any of the following types of student organizations?  Social (e.g., fraternity or sorority).
+VALUE LABELS ENQ6H
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6H (-8).
+IF (q6h = 1) ENQ6H = 1. 
+EXECUTE.
+
+STRING ENQ6I (A5). 
+ALTER TYPE ENQ6I (f8). 
+COMPUTE ENQ6I = 0.
+VARIABLE LABELS
+ENQ6I During college, did you play a leadership role in any of the following types of student organizations?  Identity-based (e.g., women, LBGT, Black Students Association).
+VALUE LABELS ENQ6I
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6I (-8).
+IF (q6i = 1) ENQ6I = 1. 
+EXECUTE.
+
+STRING ENQ6J (A5). 
+ALTER TYPE ENQ6J (f8). 
+COMPUTE ENQ6J = 0.
+VARIABLE LABELS
+ENQ6J During college, did you play a leadership role in any of the following types of student organizations?  Political (e.g., campus Democrats or Republicans).
+VALUE LABELS ENQ6J
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6J (-8).
+IF (q6j = 1) ENQ6J = 1. 
+EXECUTE.
+
+
+STRING ENQ6K (A5). 
+ALTER TYPE ENQ6K (f8). 
+COMPUTE ENQ6K = 0.
+VARIABLE LABELS
+ENQ6K During college, did you play a leadership role in any of the following types of student organizations?  Journalism (e.g., newspaper, radio, or tv).
+VALUE LABELS ENQ6K
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ6K (-8).
+IF (q6k = 1) ENQ6K = 1. 
+EXECUTE.
+
+COMMENT CREATED BINARY VARIABLE FOR q7 (VOLUNTER). 
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+STRING ENQ7 (A4). 
+ALTER TYPE ENQ7 (f8). 
+COMPUTE ENQ7 = q7.
+VARIABLE LABELS
+ENQ7 During your last two years of college, did you volunteer an average of five or more hours per week during the academic year in a nonprofit group or government agency?.
+VALUE LABELS ENQ7
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ7(-8).
+IF (q7 = 2) ENQ7 = 0. 
+EXECUTE.
+
+COMMENT CREATED BINARY VARIABLE FOR q9 (NON/PROFIT GOVT AGENCY). 
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+STRING ENQ9 (A4). 
+ALTER TYPE ENQ9 (f8). 
+COMPUTE ENQ9 = q9.
+VARIABLE LABELS
+ENQ9 During the summers between your college years, did you hold a paid or unpaid position for a nonprofit or government agency?.
+VALUE LABELS ENQ9
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ9(-8).
+IF (q9 = 2) ENQ9 = 0. 
+EXECUTE.
+
+COMMENT CREATED BINARY VARIABLE FOR q12 (DIRECT TO LAW SCHOOL). 
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+STRING ENQ12 (A5). 
+ALTER TYPE ENQ12 (f8). 
+COMPUTE ENQ12 = q12.
+VARIABLE LABELS
+ENQ12 Did you go directly from college to law school?.
+VALUE LABELS ENQ12
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ12(-8).
+IF (q12 = 2) ENQ12 = 0. 
+EXECUTE.
+
+COMMENT CREATED BINARY VARIABLE FOR q13 (NONPROFT OR GOVT BEFORE LAW SCHOOL). 
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+*NOTE - WAS NECESSARY TO CODE AS MISSING THOSE WHO RESPONDED YES TO q12.
+
+STRING ENQ13 (A5). 
+ALTER TYPE ENQ13 (f8). 
+COMPUTE ENQ13 = q13.
+VARIABLE LABELS
+ENQ13 If you did not go directly from college to law school, did you work for six months or more in a paid or unpaid position for a nonprofit or government agency?.
+VALUE LABELS ENQ13
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ13(-8).
+IF (q13 = 2) ENQ13 = 0. 
+IF (q12 = 1) ENQ13 = -8. 
+EXECUTE.
+
+COMMENT CREATED BINARY VARIABLE FOR q15 (FELLOWSHIP BEFORE LAW SCHOOL). 
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+
+STRING ENQ15 (A5). 
+ALTER TYPE ENQ15 (f8). 
+COMPUTE ENQ15 = q15.
+VARIABLE LABELS
+ENQ15 Were any of your positions between college and law school affiliated with a fellowship program?.
+VALUE LABELS ENQ15
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path. 
+MISSING VALUES ENQ15(-8).
+IF (q15 = 2) ENQ15 = 0. 
+EXECUTE.
+
+COMMENT CREATE VARIABLE FOR CHECK BOXES Q48.
+COMMENT IN WHAT WAY(S) DID YOUR MENTOR PROVIDE MENTORSHIP CHECK ALL THAT APPLY.
+* CREATED BY PROFESSOR ALBISTON AT AN UNKNOWN DATE (IT WAS SENT TO ME 4-7-17).
+
+
+RECODE q48a (1=1) (MISSING=0) INTO M_FEEDBACK.
+VARIABLE LABELS M_FEEDBACK "Mentor provided constructive feedback on R's work.".
+EXECUTE.
+
+RECODE q48b (1=1) (MISSING=0) INTO M_LAW_SKILLS.
+VARIABLE LABELS M_LAW_SKILLS "Mentor encouraged/assisted R in developing skills to be a lawyer.".
+EXECUTE.
+
+RECODE q48c (1=1) (MISSING=0) INTO M_JOB_MARKET.
+VARIABLE LABELS M_JOB_MARKET "Mentor answered questions about the job market.".
+EXECUTE.
+
+RECODE q48d (1=1) (MISSING=0) INTO M_LAW_SCHOOL.
+VARIABLE LABELS M_LAW_SCHOOL "Mentor answered questions about how to navigate law school.".
+EXECUTE.
+
+RECODE q48e (1=1) (MISSING=0) INTO M_LAW_NETWORKING.
+VARIABLE LABELS M_LAW_NETWORKING "In what way(s) did your mentor provide inspiration, influence, advice, or assistance? Provided advice on networking".
+EXECUTE.
+
+COMMENT MARK LEINAUER CONTINUES PROF ALIBISTON'S WORK (ABOVE).
+* MENTORSHIP VARIABLES CONTINUED.
+* CREATED BY MARK LEINAUER ON APRIL 7TH, 2017. 
+* SOURCE RAW 2017 DATA.
+* I ADDED VALUE LABELS TO COMPLY WITH STYLE GUIDELINES.
+
+RECODE q48f (1=1) (MISSING=0) INTO M_LAW_INTRODUCE.
+VARIABLE LABELS 
+M_LAW_INTRODUCE Mentor introduced me to other people in my field. 
+VALUE LABELS M_LAW_INTRODUCE
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE. 
+
+RECODE q48g (1=1) (MISSING=0) INTO M_LAW_SUPPORT.
+VARIABLE LABELS 
+M_LAW_SUPPORT  In what way(s) did your mentor provide inspiration, influence, advice, or assistance? Provided emotional support and encouragement.
+VALUE LABELS M_LAW_SUPPORT
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE. 
+
+RECODE q48h (1=1) (MISSING=0) INTO M_LAW_ROLEMODEL.
+VARIABLE LABELS 
+M_LAW_ROLEMODEL Mentor provided a role model.
+VALUE LABELS M_LAW_ROLEMODEL
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE. 
+
+RECODE q48i (1=1) (MISSING=0) INTO M_LAW_OPPORT.
+VARIABLE LABELS 
+M_LAW_OPPORT Mentor Identified new opportunities for me.
+VALUE LABELS M_LAW_OPPORT
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE. 
+
+RECODE q48j (1=1) (MISSING=0) INTO M_LAW_AWARD.
+VARIABLE LABELS 
+M_LAW_AWARD Mentor recommended/nominated me for an award or scholarship.
+VALUE LABELS M_LAW_AWARD
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE. 
+
+
+RECODE q48k (1=1) (MISSING=0) INTO M_LAW_JOB.
+VARIABLE LABELS 
+M_LAW_JOB Mentor recommended me for a job or clerkship.
+VALUE LABELS M_LAW_JOB
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE. 
+
+RECODE q48l (1=1) (MISSING=0) INTO M_LAW_CAREER.
+VARIABLE LABELS 
+M_LAW_CAREER Mentor provided advice on career planning and choices.
+VALUE LABELS M_LAW_CAREER
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE.
+
+
+RECODE q48m (1=1) (MISSING=0) INTO M_LAW_TIME.
+VARIABLE LABELS 
+M_LAW_TIME Mentor provided advice on time management and academic skills.
+VALUE LABELS M_LAW_TIME
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE.
+
+RECODE q48n (1=1) (MISSING=0) INTO M_LAW_ETHICS.
+VARIABLE LABELS 
+M_LAW_ETHICS Mentor communicated professional ethics and principles.
+VALUE LABELS M_LAW_ETHICS
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE.
+
+RECODE q48o (1=1) (MISSING=0) INTO M_LAW_TALK.
+VARIABLE LABELS 
+M_LAW_TALK Mentor talked about worries or problems that I had.
+VALUE LABELS M_LAW_TALK
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE.
+
+RECODE q48p (1=1) (MISSING=0) INTO M_LAW_EDUC.
+VARIABLE LABELS 
+M_LAW_EDUC Mentor provided advice about further education.
+VALUE LABELS M_LAW_EDUC
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE.
+
+RECODE q48q (1=1) (MISSING=0) INTO M_LAW_OTHER.
+VARIABLE LABELS 
+M_LAW_OTHER Other, please specify.
+VALUE LABELS M_LAW_OTHER
+0 = No, 1 = Yes, -8 = Missing, -9 = Off Path.
+EXECUTE.
+
+
+
 
